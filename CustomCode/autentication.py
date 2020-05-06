@@ -5,9 +5,9 @@ def user_tokenid(something):
     def wrap(request):
         try:
             if request.META['HTTP_TOKEN_ID'] != '':
-                token_passed = request.META['HTTP_TOKEN_ID']
-                if token_passed != '':
-                    return something(request,token_passed)
+                passed = request.META['HTTP_TOKEN_ID']
+                if passed != '':
+                    return something(request,passed)
                 else:
                     return_data = {
                     'error': "1",

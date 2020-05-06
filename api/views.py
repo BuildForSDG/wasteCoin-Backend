@@ -143,7 +143,7 @@ def resend_otp(request):
     except Exception as e:
         return_data = {
             "error": "3",
-            "message": "An error occured"
+            "message": str(e)
         }
     return Response(return_data)
 
@@ -248,7 +248,7 @@ def password_reset(request):
     except Exception as e:
         return_data = {
             "error": "3",
-            "message": "An error occured"
+            "message": str(e)
         }
     return Response(return_data)
 
