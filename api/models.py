@@ -22,6 +22,7 @@ class User(models.Model):
 class otp(models.Model):
     class Meta:
         db_table = "OTP_Code"
+         
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     otp_code = models.IntegerField(verbose_name="OTP",blank=False)
     validated = models.BooleanField(default=False)
