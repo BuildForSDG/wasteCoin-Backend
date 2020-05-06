@@ -1,7 +1,7 @@
 A one-liner phrase describing this project or app
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d2d98e9d430a4cd385ff24e5d43b2d51)](https://app.codacy.com/gh/BuildForSDG/wasteCoin-Backend?utm_source=github.com&utm_medium=referral&utm_content=BuildForSDG/wasteCoin-Backend&utm_campaign=Badge_Grade_Settings)
-[![Codacy Badge](https://img.shields.io/badge/Code%20Quality-D-red)](https://img.shields.io/badge/Code%20Quality-D-red)
+
 
 
 ## About
