@@ -1,4 +1,3 @@
-import json 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
@@ -6,7 +5,7 @@ import smtplib
 def send_email(subject,email_address,messageToSend):
     msg = MIMEMultipart()
     message = messageToSend
-    password = "Am1nuIsr2"
+    password = 'Am1nuIsr2'
     msg['From'] = "aminuisrael90@gmail.com"
     msg['To'] = email_address
     msg['Subject'] = subject

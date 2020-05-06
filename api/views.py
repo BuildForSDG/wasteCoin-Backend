@@ -1,9 +1,8 @@
 from datetime import datetime,timezone
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import render
 from api.models import User,otp
-from CustomCode import string_generator,password_functions,validator,autentication,send_email
+from CustomCode import string_generator,password_functions,validator,autentication
 
 # Create your views here.
 @api_view(['GET'])
@@ -57,7 +56,7 @@ def user_registration(request):
                     "message":"The registration was successful",
                     "user_id": f"{userRandomId}",
                     "OTP_Code": f"{code}"
-                    } 
+                    }
         else:
             return_data = {
                 "error":"2",
@@ -76,7 +75,7 @@ def user_registration(request):
 def user_verification(request,user_id):
     try:
         otp_entered = request.data.get("otp",None)
-        if otp_entered is not None and otp_entered is not "":
+        if otp_entered != None and otp_entered != "":
             user_data = otp.objects.get(user__user_id=user_id)
             otpCode,date_added = str(user_data.otp_code),user_data.date_added
             date_now = datetime.now(timezone.utc)
@@ -118,7 +117,7 @@ def user_verification(request,user_id):
 def resend_otp(request):
     try:
         email_address = request.data.get('emailaddress',None)
-        if email_address is not None and email_address is not "":
+        if email_address != None and email_address != "":
             if User.objects.filter(email =email_address).exists() == False:
                     return_data = {
                         "error": "1",
@@ -188,7 +187,7 @@ def user_login(request):
                         "error": "1",
                         "message": "User does not exist"
                     }
-                else:   
+                else:
                     user_data = User.objects.get(user_phone=email_phone)
                     is_valid_password = password_functions.check_password_match(password,user_data.user_password)
                     is_verified = otp.objects.get(user__user_phone=user_data.user_phone).validated
@@ -224,7 +223,7 @@ def user_login(request):
 def password_reset(request):
     try:
         emailAddress = request.data.get('emailaddress',None)
-        if emailAddress is not None and emailAddress is not "":
+        if emailAddress != None and emailAddress != "":
             if User.objects.filter(email =emailAddress).exists() == False:
                 return_data = {
                     "error": "1",
@@ -262,7 +261,7 @@ def password_change(request,user_id):
         new_password = request.data.get("new_password")
         fields = [reset_code,new_password]
         if not None in fields and not "" in fields:
-            #get user info 
+            #get user info
             user_data = User.objects.get(user_id=user_id)
             otp_reset_code = otp.objects.get(user__user_id=user_id).otp_reset_code
             if reset_code == otp_reset_code:
@@ -287,6 +286,6 @@ def password_change(request,user_id):
     except Exception as e:
         return_data = {
             "error": "3",
-            "message": "An error occured"
+            "message": str(e)
         }
     return Response(return_data)

@@ -4,9 +4,9 @@ from rest_framework import status
 def user_tokenid(something):
     def wrap(request):
         try:
-            if request.META['HTTP_TOKEN_ID'] is not '':
+            if request.META['HTTP_TOKEN_ID'] != '':
                 token_passed = request.META['HTTP_TOKEN_ID']
-                if token_passed != "":
+                if token_passed != '':
                     return something(request,token_passed)
                 else:
                     return_data = {
