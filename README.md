@@ -1,4 +1,9 @@
-PROJECT WASTECOIN
+## PROJECT WASTECOIN
+
+![image](https://user-images.githubusercontent.com/26861798/81470063-8814fc80-91e0-11ea-9de8-8dc4d43beeb8.png)
+
+
+## CODACY BADGE
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d2d98e9d430a4cd385ff24e5d43b2d51)](https://app.codacy.com/gh/BuildForSDG/wasteCoin-Backend?utm_source=github.com&utm_medium=referral&utm_content=BuildForSDG/wasteCoin-Backend&utm_campaign=Badge_Grade_Settings)
 
 ## SDG: 
@@ -7,15 +12,17 @@ Sustainable Cities and Communities
 ## SOP:	
 Identify an environmental problem in your community (air, land, waste etc.) build a solution that can help to control and regulate its adverse impact. Your solution must be inclusive, safe and sustainable.
 
-## Problem
-Non-Biodegradale Waste (NBW)
+## PROBLEM
+Non-Biodegradale Waste (NBW) such as Plastics, Cartons, Nylons etc
 
 ## BRIEF INTRODUCTION
-The truth is there is money in waste. For instance, Lagos generate tons of waste and some of these wastes are harmful to the ecosystem especially on non-biodegradable wastes (NBW) such as PET bottles, carton, e-waste. Most of which end up in the roads, gutters and ultimately our water bodies. Yes, there are waste management firms helping to mitigate it and helping to sweeping the streets. However, it is my opinion that NBW reduction and recycling would not improve if we don’t tackle it from the source. Sources such as individual homes, offices, company premises, bus-stops where people make use of these items and dump them such that people are incentivized to be conscious and properly dispose these NBW. Truthfully, this decentralized approach will no doubt cause some existing companies to become obsolete. But this is the price of progress. And let’s be honest, many of them are paid to cut corners, not take care of the environment or community at large. It would go a very long way to save our dear cities and sustain them and the ecosystem at large. Our world is on a collision course with disaster if we don’t change our habits of poor waste disposal and management.
+Generally, there have been lukewarm responses to the challenges posed by improper disposal of waste especially in this part of the world. It is no news that tons of waste is generated every day and some of these wastes are harmful to the ecosystem especially non-biodegradable wastes (NBW) such as PET bottles, carton, nylons and e-waste. Most of which end up in the roads, gutters and ultimately our water bodies. Yes, there are waste management firms helping to mitigate it and helping to sweeping the streets. However, it is obvious that NBW reduction and recycling would not improve if we don’t tackle it from the source. As our environment is consistently littered with these unwanted waste resources even with the collective efforts of our waste management systems put in place by both private and public institutions. It means only one thing; the current process is ineffective and it is ineffective because the problem is not solved from the source. Sources such as individual homes, offices, company premises, bus-stops where people make use of these items and dump them such that people are incentivized to be conscious and properly dispose these NBW. Truthfully, this decentralized approach will no doubt cause some existing companies to become obsolete. But this is the price of progress. And let’s be honest, many of them are paid to cut corners, not take care of the environment or community at large. It would go a very long way to save our dear cities and sustain them and the ecosystem at large. Our world is on a collision course with disaster if we don’t change our habits of poor waste disposal and management.
 Research has it that an estimated 12 million tons of plastic gets to the ocean annually. This not just bad for the ocean but has a very long-term effect on us humans if we do not actively implement the RRR (Recycle, Reuse and Reduce) mantra. 
-According to the International Telecommunications Union, it is estimated that a whopping €55 billion ($47 billion) has been lost to electronic waste. The second biggest contributor of value is plastics. Summary of the financial potential of NBW is shown in Figure 1.
+According to the International Telecommunications Union, it is estimated that a whopping €55 billion ($47 billion) has been lost to non-biodegradable waste. The second biggest contributor of value is plastics. Summary of the financial potential of NBW is shown in Figure 1.
+
 
 ![image](https://user-images.githubusercontent.com/26861798/81467680-4b420900-91d2-11ea-8c23-5bf6b8ef0dfa.png)
+
 Figure 1: Financial Potential in mining NBW
 
 More so, having done some market research on a sampled population, it can be deduced that an average Nigerian buy no less than five items in plastic containers (food, groceries, cosmetic or others) and as such more likely dispose them with little thought towards saving the ecosystem. However, the survey result showed that over 80% are more than willing to dispose plastics and NBW properly by saving them and willing to take them to a collection center without incentives.  With incentives such as cash rewards, data subscription, recharge card voucher, educational books and other product base incentives, the willingness improved by 13%. The result from the survey market research is shown in APPENDIX.
@@ -28,7 +35,7 @@ For waste accountability, certain amount of WasteCoin would be allocated to a ge
 Waste Collection could be community base as community leaders could be rallied and their support obtained to encourage their subjects to buy into the vision. 
 
 ## WHY IS THIS PROJECT RELEVANT
-So, this project would consentiously and efficiently help to reduce and recycle non-biodegradable waste in accordance to the Sustainable Development Goal no 11.
+ if an average Nigerian is made aware of the value of these NBW and would be incentivized. The consciousness would drive good and acceptable waste disposal habit. This can be achieved via this wastecoin project as it would consentiously help to reduce and recycle non-biodegradable waste in accordance to the Sustainable Development Goal no 11, help keep our cities safe and clean and also reward good waste disposal habit.
 
 ## USER JOURNEY
 1.	Malik downloaded the WasteCoin app, 
@@ -42,16 +49,17 @@ So, this project would consentiously and efficiently help to reduce and recycle 
 So, let’s say Malik was able to gather and save up to 10,000WC after one month, it could be converted to let’s say N1000 or request for a recharge card worth N1000. 
 
 ## UNIQUENESS
-	The business model is not limited to any locality in terms of reach to market share reach as anyone with the app can go at his/her convenience to drop NWB and get credited depending on the arrangement agreed upon.
-	Gives everyone the opportunity to make conscious and unconscious effort towards saving and protecting the environment
-	It is flexible and can be modified to suit any state waste need in Nigeria 
-	Solid arrangements would have been made with Client companies who needs NBW to collect them at the designated waste centers
+1.	The business model is not limited to any locality in terms of reach to market share reach as anyone with the app can go at his/her convenience to drop NWB and get credited depending on the arrangement agreed upon.
+2.  Gives everyone the opportunity to make conscious and unconscious effort towards saving and protecting the environment
+3. 	It is flexible and can be modified to suit any state waste need in Nigeria 
+4. 	Solid arrangements would have been made with Client companies who needs NBW to collect them at the designated waste centers
 
 ## ADVANTAGES/STRENGTH 
 1.	Develop a community of waste conscious society
 2.	Reduce waste drastically especially plastic, carton and e-waste 
 3.	There is reward for compliance as every plastic user is rewarded for their plastic accountability as against a few who does not.
 4.	There would be a ready feedstock for companies that used NBW for production of other products
+
 
 ## CHALLENGES/WEAKNESS 
 1.	How to help Nigerians see the bigger picture of saving the environment that what they more likely get from the project.
@@ -79,7 +87,7 @@ The WasteCoin solution is not just one feasible solution but also inclusive, saf
 ## BUILT WITH
 * [Django](https://www.djangoproject.com) - Backend framework used
 * [React](https://reactjs.org) - Frontend framework used
-* [Android](https://reactjs.org) - Mobile framework used
+* [Android](https://www.android.com) - Mobile framework used
 
 ## APK FILE
 https://drive.google.com/file/d/1cIKDHHbNkmpPCrO91jaW2u3MIHfTb2_v/view?usp=sharing
@@ -137,13 +145,13 @@ All tests should be written in the `tests` folder. tests/test_src.py is a sample
   `poetry run app`
 
 ## AUTHORS/TEAM - 105 MEMBERS
- [Aminu Israel](https://github.com/AminuIsrael) - Backend Developer, UI/UX
- [Chidozie Managwu](https://github.com/chidoziemanagwu) - Backend Developer, UI/UX
- [Olarewaju Temitope Albert](https://github.com/albert85) - Frontend Developer
- [Mohammed Bayero](https://github.com/byruzyayandy1) - Backend Developer, Product Manager
- [Mohammed Zubairu](https://github.com/moxeey) - Android App Developer/Frontend Developer
- [Olagunju Daniel](https://github.com/todak2000) - Frontend Developer, Project Manager, UI/UX (TTL)
- [Stephen Kamau](https://github.com/stephen-kamau) - Team Mentor
+ * [Aminu Israel](https://github.com/AminuIsrael) - Backend Developer, UI/UX
+ * [Chidozie Managwu](https://github.com/chidoziemanagwu) - Backend Developer, UI/UX
+ * [Olarewaju Temitope Albert](https://github.com/albert85) - Frontend Developer
+ * [Mohammed Bayero](https://github.com/byruzyayandy1) - Backend Developer, Product Manager
+ * [Mohammed Zubairu](https://github.com/moxeey) - Android App Developer/Frontend Developer
+ * [Olagunju Daniel](https://github.com/todak2000) - Frontend Developer, Project Manager, UI/UX (TTL)
+ * [Stephen Kamau](https://github.com/stephen-kamau) - Team Mentor
 
 ## CONTRIBUTING
 If this project sounds interesting to you and you'd like to contribute, thank you!
@@ -152,9 +160,6 @@ First, you can send a mail to buildforsdg@andela.com to indicate your interest, 
 2.  area two (e.g you want people to opt-in and try using your staging app at staging.project-name.com and report any bugs via a form)
 3.  area three (e.g here is the zoom link to our end-of sprint webinar, join and provide feedback as a stakeholder if you can)
 ## Acknowledgements
-Did you use someone else's code?
-Do you want to thank someone explicitly?
-Did someone's blog post spark off a wonderful idea or give you a solution to nagging problem?
-It's powerful to always give credit.
+Team -105 wants to explicitly thank [Facebook](https://facebook.com) and [Andela](https://andela.com) for their support and assistance throughout this project. 
 ## LICENSE
 MIT
