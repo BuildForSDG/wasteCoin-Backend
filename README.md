@@ -9,7 +9,7 @@
 ## SDG: 
 Sustainable Cities and Communities
 
-## SOP:	
+## STATEMENT OF PROBLEM:	
 Identify an environmental problem in your community (air, land, waste etc.) build a solution that can help to control and regulate its adverse impact. Your solution must be inclusive, safe and sustainable.
 
 ## PROBLEM
@@ -160,6 +160,6 @@ First, you can send a mail to buildforsdg@andela.com to indicate your interest, 
 2.  area two (e.g you want people to opt-in and try using your staging app at staging.project-name.com and report any bugs via a form)
 3.  area three (e.g here is the zoom link to our end-of sprint webinar, join and provide feedback as a stakeholder if you can)
 ## Acknowledgements
-Team -105 wants to explicitly thank [Facebook](https://facebook.com) and [Andela](https://andela.com) for their support and assistance throughout this project. 
+Team -105 wants to explicitly thank [Facebook](https://facebook.com) and [Andela](https://andela.com) for their support and assistance throughout this project. Special shoutout to [Sam Esidem](https://github.com/esidem), [Charles Odili](www.linkedin.com/in/charlesodili), [Amaka Mbaegbu](www.linkedin.com/in/amymbaegbu/) and [Cliff Gor](www.linkedin.com/in/cliff-gor/) for their assitance, patience and availability to help us through our difficulties.
 ## LICENSE
 MIT
