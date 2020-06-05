@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from api.models import User, UserCoins, UserTrasactionHistory, otp, AccountDetails
 from CustomCode import (autentication, fixed_var, password_functions,
-                        send_email, string_generator, validator,sms)
+                        string_generator, validator,sms)
 from wasteCoin import settings
 
 
@@ -373,7 +373,6 @@ def Dashboard(request,decrypedToken):
             exchangeRate,changed_rate = rate_exchange,rate_changed
             minedCoins = user_data.minedCoins
             unminedCoins = user_coins - minedCoins
-            miner_id = UserCoins.objects.get(user__user_id=user_id).minerID
             WasteCoinBoard = UserCoins.objects.all().order_by('-minedCoins')
             i = 0
             topCoinsMined = []
@@ -747,7 +746,7 @@ def update_info(request,decryptedToken):
     except Exception as e:
         return_data = {
             "error": "3",
-            "message": "An error occured"
+            "message": str(e)
         }
     return Response(return_data)
 

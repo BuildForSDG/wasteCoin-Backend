@@ -17,7 +17,7 @@ def token_required(something):
                         "message": "Token has expired"
                         }
                     return Response(return_data, status=status.HTTP_401_UNAUTHORIZED)
-                except:
+                except Exception:
                     return_data = {
                         "error": "1",
                         "message": "Invalid Token"
@@ -36,5 +36,5 @@ def token_required(something):
                 }
             return Response(return_data, status=status.HTTP_401_UNAUTHORIZED)
     return wrap
-                
-                
+
+
