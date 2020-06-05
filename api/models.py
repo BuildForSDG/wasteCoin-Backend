@@ -18,7 +18,7 @@ class User(models.Model):
     user_country = models.TextField(max_length=200,verbose_name="Country")
     date_added = models.DateTimeField(default=timezone.now)
     role = models.TextField(max_length=50,verbose_name="User role",default="user")
-    
+
 class otp(models.Model):
     class Meta:
         db_table = "OTP_Code"

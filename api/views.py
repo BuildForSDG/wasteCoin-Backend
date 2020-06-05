@@ -291,7 +291,7 @@ def user_login(request):
 def password_reset(request):
     try:
         phone_number = request.data.get('phone_number',None)
-        if phone_number is not None and phone_number is not "":
+        if phone_number != None and phone_number != "":
             if User.objects.filter(user_phone =phone_number).exists() == False:
                 return_data = {
                     "error": "1",
@@ -352,7 +352,7 @@ def password_change(request,decrypedToken):
                 "error": "2",
                 "message": "Invalid Parameters"
             }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
             "message": str(e)
@@ -376,7 +376,7 @@ def Dashboard(request,decrypedToken):
             WasteCoinBoard = UserCoins.objects.all().order_by('-minedCoins')
             i = 0
             topCoinsMined = []
-            numberOfUsers = 5
+            #numberOfUsers = 5
             while i < len(WasteCoinBoard):
                 topUsers = {
                     "miner_id": WasteCoinBoard[i].minerID,
@@ -419,7 +419,7 @@ def Dashboard(request,decrypedToken):
                 "error": "2",
                 "message": "Invalid Parameter"
             }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
             "message": str(e)
@@ -433,7 +433,7 @@ def LeadBoard(request):
         WasteCoinBoard = UserCoins.objects.all().order_by('-minedCoins')
         i = 0
         topCoinsMined = []
-        numberOfUsers = 2
+        #numberOfUsers = 2
         while i < len(WasteCoinBoard):
             topUsers = {
                 "miner_id": WasteCoinBoard[i].minerID,
@@ -446,7 +446,7 @@ def LeadBoard(request):
             "message": "Successfull",
             "LeaderBoard": topCoinsMined
         }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
             "message": str(e)
@@ -504,10 +504,10 @@ def user_profile(request,decrypedToken):
 
         }
 
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
-            "message": str(e)
+            "message": "An error occured"
         }
     return Response(return_data)
 
@@ -556,10 +556,10 @@ def wallet_details(request,decrypedToken):
                     "transaction_history": trasactions[1:]
                 }
             }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
-            "message": str(e)
+            "message": "An error occured"
         }
     return Response(return_data)
 
@@ -568,7 +568,7 @@ def wallet_details(request,decrypedToken):
 def redeemcoins(request,decrypedToken):
     try:
         coins_amount = request.data.get("amount",None)
-        if coins_amount is not None and coins_amount is not "":
+        if coins_amount != None and coins_amount != "":
             coins_amount = float(coins_amount)
             if coins_amount == float(0) or coins_amount < float(0):
                 return_data = {
@@ -607,10 +607,10 @@ def redeemcoins(request,decrypedToken):
                 "error": 2,
                 "message": "Invalid Parameter"
             }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
-            "message": str(e)
+            "message": "An error occured"
         }
     return Response(return_data)
 
@@ -675,10 +675,10 @@ def allocate_coins(request,decrypedToken):
                 "error": "2",
                 "message": "Invalid Parameters"
             }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
-            "message": str(e)
+            "message": "An error occured"
             }
     return Response(return_data)
 
@@ -707,10 +707,10 @@ def changepassword(request,decryptedToken):
                     "error": "0",
                     "message": "Successfull, Password Changed"
                 }
-    except Exception as e:
+    except Exception:
         return_data = {
                 "error": "3",
-                "message": str(e)
+                "message": "An error occured"
         }
     return Response(return_data)
 
@@ -743,10 +743,10 @@ def update_info(request,decryptedToken):
                 "error": "2",
                 "message": "Invalid Parameter"
             }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
-            "message": str(e)
+            "message": "An error occured"
         }
     return Response(return_data)
 
@@ -793,7 +793,7 @@ def account_details(request,decryptedToken):
                 "error": "2",
                 "message": "Invalid Parameter"
             }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
             "message": "An error occured"
