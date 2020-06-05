@@ -355,7 +355,7 @@ def password_change(request,decrypedToken):
     except Exception:
         return_data = {
             "error": "3",
-            "message": str(e)
+            "message": "An error occured"
         }
     return Response(return_data)
 
