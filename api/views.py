@@ -226,10 +226,10 @@ def user_login(request):
                                     "address": f"{user_data.user_address}",
                                     "state": f"{user_data.user_state}",
                                     "LGA": f"{user_data.user_LGA}",
-                                    "country": f"{user_data.user_country}"     
+                                    "country": f"{user_data.user_country}"
                                 }
                             ]
-                            
+
                         }
                     elif is_verified == False:
                         return_data = {
@@ -276,10 +276,10 @@ def user_login(request):
                                     "state": f"{user_data.user_state}",
                                     "LGA": f"{user_data.user_LGA}",
                                     "country": f"{user_data.user_country}"
-                                    
+
                                 }
                             ]
-                            
+
                         }
                     elif is_verified == False:
                         return_data = {
@@ -393,7 +393,7 @@ def Dashboard(request,decrypedToken):
         if user_id != None and user_id != '':
             user_data = UserCoins.objects.get(user__user_id=user_id)
             user_coins = user_data.allocateWasteCoin
-            month = user_data.date_added.strftime('%B') 
+            month = user_data.date_added.strftime('%B')
             rate_exchange = fixed_var.exchange_rate
             rate_changed = fixed_var.changed_rate
             exchangeRate,changed_rate = rate_exchange,rate_changed
@@ -411,17 +411,17 @@ def Dashboard(request,decrypedToken):
                 sum_of_coins_user = minedCoins + unminedCoins
                 percent_of_Usermined_coins = round((minedCoins/(sum_of_coins_user+0.0001))*100)
                 percent_of_Userunmined_coins = round((unminedCoins/(sum_of_coins_user+0.0001))*100)
-                while i < len(WasteCoinBoard):
+                while i < numberOfUsers:
                     topUsers = {
                         "miner_id": WasteCoinBoard[i].minerID,
-                        "CoinMined": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minedCoins 
+                        "CoinMined": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minedCoins
                     }
                     topCoinsMined.append(topUsers)
                     i += 1
                 return_data = {
                     "error": "0",
                     "message": "Sucessfull",
-                    "data": 
+                    "data":
                         {
                             "allocatedWasteCoin": user_coins,
                             "month": month,
@@ -439,7 +439,7 @@ def Dashboard(request,decrypedToken):
             }
             else:
                 while i < len(agent_user_minerid):
-                    miner_id = list(agent_user_minerid)[i]['coin_allocated_to'] 
+                    miner_id = list(agent_user_minerid)[i]['coin_allocated_to']
                     if miner_id != UserCoins.objects.get(user__user_id=user_id).minerID:
                         user_mined_coins = UserCoins.objects.get(minerID=miner_id).minedCoins
                         unminedCoins = UserCoins.objects.get(minerID=miner_id).allocateWasteCoin
@@ -453,7 +453,7 @@ def Dashboard(request,decrypedToken):
                 return_data = {
                     "error": "0",
                     "message": "Sucessfull",
-                    "data": 
+                    "data":
                         {
                             "allocatedWasteCoin": user_coins,
                             "month": month,
@@ -473,7 +473,7 @@ def Dashboard(request,decrypedToken):
             return_data = {
                 "error": "2",
                 "message": "Invalid Parameter"
-            } 
+            }
     except Exception:
         return_data = {
             "error": "3",
@@ -492,7 +492,7 @@ def LeadBoard(request):
         while i < len(WasteCoinBoard):
             topUsers = {
                 "miner_id": WasteCoinBoard[i].minerID,
-                "CoinMined": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minedCoins 
+                "CoinMined": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minedCoins
             }
             topCoinsMined.append(topUsers)
             i += 1
@@ -501,7 +501,7 @@ def LeadBoard(request):
             "message": "Successfull",
             "LeaderBoard": topCoinsMined
         }
-    except Exception as e:
+    except Exception:
         return_data = {
             "error": "3",
             "message": "An error occured"
@@ -515,10 +515,10 @@ def user_profile(request,decrypedToken):
         userID = decrypedToken['user_id']
         UserInfo = User.objects.get(user_id=userID)
         UserCoin = UserCoins.objects.get(user__user_id=userID)
-        #verify if user have account 
+        #verify if user have account
         account_info = AccountDetails.objects.filter(user__user_id=decrypedToken['user_id']).exists()
         if account_info == True:
-            account = AccountDetails.objects.get(user__user_id=decrypedToken['user_id']) 
+            account = AccountDetails.objects.get(user__user_id=decrypedToken['user_id'])
             account_details = {
                 "account_name": account.account_name,
                 "account_number": account.account_number,
@@ -544,7 +544,7 @@ def user_profile(request,decrypedToken):
                             "state": f"{UserInfo.user_state}",
                             "LGA": f"{UserInfo.user_LGA}",
                             "country": f"{UserInfo.user_country}",
-                            "role": f"{UserInfo.role}"         
+                            "role": f"{UserInfo.role}"
                         }
                     ,
                     "user_coins": {
@@ -553,11 +553,11 @@ def user_profile(request,decrypedToken):
                             "minedcoins": f"{UserCoin.minedCoins}"
                         },
                     "account_information": account_details
-                    
+
                 }
-            
+
         }
-        
+
     except Exception:
         return_data = {
             "error": "3",
@@ -589,7 +589,7 @@ def wallet_details(request,decrypedToken):
                 "message": "Successfull",
                 "data": {
                     "current_balance": f"{user_coins.allocateWasteCoin}",
-                    "transaction_history": trasactions[1:]  
+                    "transaction_history": trasactions[1:]
                 }
             }
         else:
@@ -667,10 +667,10 @@ def redeemcoins(request,decrypedToken):
             "error": "3",
             "message": "An error occured"
         }
-    return Response(return_data)    
-                
-                
-                
+    return Response(return_data)
+
+
+
 @api_view(["POST"])
 @autentication.token_required
 def allocate_coins(request,decrypedToken):
@@ -683,14 +683,14 @@ def allocate_coins(request,decrypedToken):
                 return_data = {
                     "error": "1",
                     "message": "User does not exist"
-                    
+
                     }
-                
+
             elif User.objects.get(user_id= decrypedToken['user_id']).role != "agent":
                 return_data = {
                     "error": "2",
                     "message": "Unauthorized User"
-                    
+
                     }
             else:
                 agent_coins = UserCoins.objects.get(user__user_id=decrypedToken["user_id"]).allocateWasteCoin
@@ -761,7 +761,7 @@ def changepassword(request,decryptedToken):
                 return_data = {
                     "error": "0",
                     "message": "Successfull, Password Changed"
-                }   
+                }
     except Exception:
         return_data = {
                 "error": "3",
@@ -843,7 +843,7 @@ def account_details(request,decryptedToken):
                         "bank_name": bankName
                     }
                 }
-        else:   
+        else:
             return_data = {
                 "error": "2",
                 "message": "Invalid Parameter"
