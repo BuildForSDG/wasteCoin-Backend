@@ -489,7 +489,7 @@ def LeadBoard(request):
         i = 0
         topCoinsMined = []
         numberOfUsers = 2
-        while i < len(WasteCoinBoard):
+        while i < numberOfUsers:
             topUsers = {
                 "miner_id": WasteCoinBoard[i].minerID,
                 "CoinMined": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minedCoins
