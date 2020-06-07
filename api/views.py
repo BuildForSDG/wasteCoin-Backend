@@ -352,7 +352,7 @@ def password_reset(request):
 def password_change(request,decrypedToken):
     try:
         reset_code = request.data.get("reset_code",None)
-        new_password = request.data.get("new_password",None)
+        new_password = request.data.get("new_password",None).strip()
         fields = [reset_code,new_password]
         if not None in fields and not "" in fields:
             #get user info
