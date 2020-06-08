@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-DEV_GATEWAY = 'ig&#ou4+s%_1gqmhh+6fk)jj6vyqqyzw8p^(v&smv-hyg5m4&='
+SECRET_KEY = 'ig&#ou4+s%_1gqmhh+6fk)jj6vyqqyzw8p^(v&smv-hyg5m4&='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -27,12 +27,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'api'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -59,6 +61,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'WasteCoin.wsgi.application'
+CORS_ORIGIN_ALLOW_ALL =True
 
 
 # Database

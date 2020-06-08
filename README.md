@@ -90,60 +90,41 @@ The WasteCoin solution is not just one feasible solution but also inclusive, saf
 * [Android](https://www.android.com) - Mobile framework used
 
 ## APK FILE
-https://drive.google.com/file/d/1cIKDHHbNkmpPCrO91jaW2u3MIHfTb2_v/view?usp=sharing
+[APK ANDROID](https://s3.amazonaws.com/gonativeio/static/5edbc58d67540a290b490255/app-release.apk)
 
 ## WEBSITE
-https://dashboard-no-important.netlify.app
-
+[wastecoin](https://waste1234.herokuapp.com)
 
 ## SETUP
 You should have **Python 3.5+** and **git** installed. 
 1. Clone the repo you've created from the template herein and change into the directory
+    Backend
     ``
-    git clone <Your Repository>
+    git clone https://github.com/BuildForSDG/wasteCoin-Backend.git
+    ``
+    Frontend
+    ``
+    git clone https://github.com/BuildForSDG/wasteCoin-Frontend.git
     ``
 2. Change into repo directory
+    Backend
     ``
-    cd python-starter
+    cd wasteCoin-Backend
     ``
-3. Install poetry, a dependecy manager for python.
-    On windows, you will need powershell to install it:
+    Frontend
+     ``
+    cd wasteCoin-Frontend
     ``
-    (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python
+4. You should install project dependecies by running:
     ``
-    After that you will need to restart the shell to make it operational.
-    &nbsp;
-    On linux and other posix systems (mac included):
+    pip install -r requirements.txt
     ``
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+ 5. Run the Project:  
     ``
-    &nbsp;
-    To check that it is correctly installed, you can check the version:
+    python manage.py runserver
     ``
-    poetry --version
-    ``
-    May be the latest stable version is not installed with the installation script, to update poetry, you can run:
-    ``
-    poetry self update
-    ``
-4. With poetry installed, you should install project dependecies by running:
-    ``
-    poetry install
-    ``
-    This will install pytest for running tests and flake8, linter for your project.
-#### To Note
-`src/app.py` is the entry to the project and source code should go into the `src` folder.
-All tests should be written in the `tests` folder. tests/test_src.py is a sample test file that shows how tests should like. Feel free to delete it.
-#### Hints
-- Lint: `poetry run flake8`
-- Run tests using the command: `poetry run pytest`
-- Install dependencies: 
-  `poetry add <dependency>`
-- Install dev dependencies:
-  `poetry add --dev <dev-dependency>`
-- Run your project:
-  `poetry run app`
-
+  For more information, Please check the Wastecoin Backend DOcumentation [HERE](https://documenter.getpostman.com/view/9033557/SzmmUEYa?version=latest)
+  
 ## AUTHORS/TEAM - 105 MEMBERS
  * [Aminu Israel](https://github.com/AminuIsrael) - Backend Developer, UI/UX
  * [Chidozie Managwu](https://github.com/chidoziemanagwu) - Backend Developer, UI/UX
@@ -156,10 +137,10 @@ All tests should be written in the `tests` folder. tests/test_src.py is a sample
 ## CONTRIBUTING
 If this project sounds interesting to you and you'd like to contribute, thank you!
 First, you can send a mail to buildforsdg@andela.com to indicate your interest, why you'd like to support and what forms of support you can bring to the table, but here are areas we think we'd need the most help in this project :
-1.  area one (e.g this app is about human trafficking and you need feedback on your roadmap and feature list from the private sector / NGOs)
-2.  area two (e.g you want people to opt-in and try using your staging app at staging.project-name.com and report any bugs via a form)
-3.  area three (e.g here is the zoom link to our end-of sprint webinar, join and provide feedback as a stakeholder if you can)
+1.  This app is about encouraging good waste disposal habit, rewarding such habit and inturn saving the ecosystem. Thus, Ideas on improvement are welcome
+2.  You could help to check out the Web app at https://waste1234.herokuapp.com or download the  [Android Mobile APK](https://s3.amazonaws.com/gonativeio/static/5edbc58d67540a290b490255/app-release.apk) and report any bugs.
+
 ## Acknowledgements
-Team -105 wants to explicitly thank [Facebook](https://facebook.com) and [Andela](https://andela.com) for their support and assistance throughout this project. Special shoutout to [Sam Esidem](https://github.com/esidem), [Charles Odili](www.linkedin.com/in/charlesodili), [Amaka Mbaegbu](www.linkedin.com/in/amymbaegbu/) and [Cliff Gor](www.linkedin.com/in/cliff-gor/) for their assitance, patience and availability to help us through our difficulties.
+Team -105 wants to explicitly thank [Facebook](https://facebook.com) and [Andela](https://andela.com) for their support and assistance throughout this project. Special shoutout to [Sam Esidem](https://github.com/esidem), [Charles Odili](www.linkedin.com/in/charlesodili), [Amaka Mbaegbu](www.linkedin.com/in/amymbaegbu/), [Joy Ejiofoh](https://ng.linkedin.com/in/joy-ejiofoh) and [Cliff Gor](www.linkedin.com/in/cliff-gor/) for their assitance, patience and availability to help us through our difficulties.
 ## LICENSE
 MIT
