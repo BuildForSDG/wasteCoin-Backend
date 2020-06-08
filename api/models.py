@@ -73,3 +73,12 @@ class AccountDetails(models.Model):
     account_number = models.TextField(max_length=150,unique=True,verbose_name="Account Number")
     bank_name = models.TextField(max_length=150,verbose_name="Bank Name")
     date_added = models.DateTimeField(default=timezone.now)
+
+class ContactUs(models.Model):
+    class Meta:
+        db_table = "Contact Us"
+    full_name = models.TextField(verbose_name="Full_Name")
+    email = models.TextField(max_length=200,verbose_name="email")
+    phone_number = models.TextField(max_length=20,verbose_name="phone_number",default="")
+    message = models.TextField(verbose_name="message")
+    date_added = models.DateTimeField(default=timezone.now)
