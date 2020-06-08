@@ -34,17 +34,33 @@ class UserCoins(models.Model):
         db_table = "User_Coins"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     minerID = models.CharField(max_length=500,unique=True,verbose_name="miner_ID")
-    allocateWasteCoin = models.FloatField(verbose_name="AllocatedWasteCoin",default=0)
+    redeemedWasteCoin = models.FloatField(verbose_name="redeemedWasteCoin",default=0)
     minedCoins = models.FloatField(verbose_name="minedCoins",default=0)
+    date_added = models.DateTimeField(default=timezone.now)
+
+class AgentCoins(models.Model):
+    class Meta:
+        db_table = "Agent_Coins"
+    agent = models.ForeignKey(User,on_delete=models.CASCADE)
+    agentCoins = models.FloatField(verbose_name="AllocatedCoins",default=0)
     date_added = models.DateTimeField(default=timezone.now)
 
 class UserTrasactionHistory(models.Model):
     class Meta:
-        db_table = "Transaction_History"
+        db_table = "User_Transaction_History"
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     transaction_id = models.TextField(verbose_name="trans_id",unique=True)
     amount = models.FloatField(verbose_name="CoinAmount")
-    coin_mined_amount = models.FloatField(verbose_name="CoinminedAmount",default=0)
+    coin_redeemed_amount = models.FloatField(verbose_name="CoinunminedAmount",default=0)
+    transaction = models.TextField(max_length=10,verbose_name="Transactions")
+    date_added = models.DateTimeField(default=timezone.now)
+
+class AgentTransactionHistory(models.Model):
+    class Meta:
+        db_table = "Agent_Transaction_History"
+    agent = models.ForeignKey(User,on_delete=models.CASCADE)
+    transaction_id = models.TextField(verbose_name="trans_id",unique=True)
+    amount = models.FloatField(verbose_name="CoinAmount")
     coin_allocated_to = models.TextField(verbose_name="Miner_ID",default=0)
     transaction = models.TextField(max_length=10,verbose_name="Transactions")
     date_added = models.DateTimeField(default=timezone.now)

@@ -1,12 +1,14 @@
 import datetime
 
 import jwt
+from django.db.models import Sum
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from api.models import User, UserCoins, UserTrasactionHistory, otp, AccountDetails
-from CustomCode import (autentication, fixed_var, password_functions,
-                        string_generator, validator,sms)
+from api.models import (AccountDetails, AgentCoins, AgentTransactionHistory,
+                        User, UserCoins, UserTrasactionHistory, otp)
+from CustomCode import (autentication, fixed_var, password_functions, sms,
+                        string_generator, validator)
 from wasteCoin import settings
 
 
@@ -39,10 +41,10 @@ def user_registration(request):
                     "error": "1",
                     "message": "User Exists"
                 }
-            elif validator.checkmail(email) == False or validator.checkphone(phoneNumber)==False:
+            elif validator.checkmail(email) == False or validator.checkphone(phoneNumber)== False:
                 return_data = {
                     "error": "1",
-                    "message": "Email or Phone number is not valid"
+                    "message": "Email or Phone number is Invalid"
                 }
             else:
                 #generate user_id
@@ -63,16 +65,16 @@ def user_registration(request):
                 user_OTP =otp(user=new_userData,otp_code=code)
                 user_OTP.save()
                 #Generate default coins
-                user_Coins = UserCoins(user=new_userData,minerID=miner_id,allocateWasteCoin=0,minedCoins=0)
+                user_Coins = UserCoins(user=new_userData,minerID=miner_id,redeemedWasteCoin=0,minedCoins=0)
                 user_Coins.save()
                 #Save Transaction Details
                 user_transaction = UserTrasactionHistory(user=new_userData,transaction_id=transactionid,
-                                                        amount=0,coin_mined_amount=0,coin_allocated_to=miner_id,transaction="Credit")
+                                                        amount=0,coin_redeemed_amount=0,transaction="Credit")
                 user_transaction.save()
                 role = User.objects.get(user_id=userRandomId).role
                 validated = otp.objects.get(user__user_id=userRandomId).validated
                 #Generate token
-                timeLimit= datetime.datetime.utcnow() + datetime.timedelta(minutes=1440) #set limit for user
+                timeLimit= datetime.datetime.utcnow() + datetime.timedelta(minutes=1440) #set duration for token
                 payload = {"user_id": f"{userRandomId}",
                            "role": role,
                            "validated": validated,
@@ -162,9 +164,9 @@ def resend_otp(request):
                 sms.sendsms(phone_number[1:],message)
                 timeLimit= datetime.datetime.utcnow() + datetime.timedelta(minutes=1440) #set limit for user
                 payload = {"user_id": f'{user.user_id}',
-                               "role": user.role,
-                               "validated": user_data.validated,
-                               "exp":timeLimit}
+                           "role": user.role,
+                           "validated": user_data.validated,
+                           "exp":timeLimit}
                 token = jwt.encode(payload,settings.SECRET_KEY)
                 return_data = {
                     "error": "0",
@@ -193,6 +195,7 @@ def user_login(request):
         field = [email_phone,password]
         if not None in field and not '' in field:
             validate_mail = validator.checkmail(email_phone)
+            validate_phone = validator.checkphone(email_phone)
             if validate_mail == True:
                 if User.objects.filter(email =email_phone).exists() == False:
                     return_data = {
@@ -242,7 +245,7 @@ def user_login(request):
                             "error" : "1",
                             "message" : "Wrong Password"
                         }
-            else:
+            elif validate_phone == True:
                 if User.objects.filter(user_phone =email_phone).exists() == False:
                     return_data = {
                         "error": "1",
@@ -292,6 +295,11 @@ def user_login(request):
                             "error" : "1",
                             "message" : "Wrong Password"
                         }
+            else:
+                return_data = {
+                    "error": "2",
+                    "message": "Email or Phone Number is Invalid"
+                }
         else:
             return_data = {
                 "error" : "2",
@@ -391,82 +399,42 @@ def Dashboard(request,decrypedToken):
     try:
         user_id = decrypedToken['user_id']
         if user_id != None and user_id != '':
-            user_data = UserCoins.objects.get(user__user_id=user_id)
-            user_coins = user_data.allocateWasteCoin
-            month = user_data.date_added.strftime('%B')
+            total_wastecoin = fixed_var.backallocation
             rate_exchange = fixed_var.exchange_rate
             rate_changed = fixed_var.changed_rate
-            exchangeRate,changed_rate = rate_exchange,rate_changed
-            minedCoins = user_data.minedCoins
-            unminedCoins = user_coins - minedCoins
-            WasteCoinBoard = UserCoins.objects.all().order_by('-minedCoins')
-            agent_user_minerid = UserTrasactionHistory.objects.filter(user__user_id=user_id).values('coin_allocated_to').distinct()
-            total_coin_mined = 0
-            total_coin_unmined = 0
+            month = datetime.datetime.now().strftime('%B')
+            total_minedCoins = UserTrasactionHistory.objects.filter(transaction="Credit").aggregate(Sum('amount'))['amount__sum']
+            total_unminedCoins = total_wastecoin - total_minedCoins
+            #Get Percentage
+            percent_of_Usermined_coins = round((total_minedCoins/(total_wastecoin))*100)
+            percent_of_Userunmined_coins = round((total_unminedCoins/(total_wastecoin))*100)
+            WasteCoinBoard = UserTrasactionHistory.objects.filter(transaction='Credit').distinct('amount').order_by('-amount')
             i = 0
-            topCoinsMined = []
             numberOfUsers = 5
-            if decrypedToken['role'] == "user":
-                #Get Percentage user
-                sum_of_coins_user = minedCoins + unminedCoins
-                percent_of_Usermined_coins = round((minedCoins/(sum_of_coins_user+0.0001))*100)
-                percent_of_Userunmined_coins = round((unminedCoins/(sum_of_coins_user+0.0001))*100)
-                while i < numberOfUsers:
-                    topUsers = {
-                        "miner_id": WasteCoinBoard[i].minerID,
-                        "CoinMined": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minedCoins
+            topCoinsMined = []
+            while i < len(WasteCoinBoard):
+                topUsers = {
+                    "miner_id": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minerID,
+                    "CoinMined": WasteCoinBoard[i].amount
                     }
-                    topCoinsMined.append(topUsers)
-                    i += 1
+                topCoinsMined.append(topUsers)
+                i += 1
                 return_data = {
                     "error": "0",
                     "message": "Sucessfull",
                     "data":
                         {
-                            "allocatedWasteCoin": user_coins,
+                            "allocatedWasteCoin": total_wastecoin,
                             "month": month,
-                            "exchangeRate": exchangeRate,
-                            "changedRate": changed_rate,
-                            "totalWasteCoinMined": minedCoins,
-                            "totalWasteCoinUnmined": unminedCoins,
+                            "exchangeRate": rate_exchange,
+                            "changedRate": rate_changed,
+                            "totalWasteCoinMined": total_minedCoins,
+                            "totalWasteCoinUnmined": total_unminedCoins,
                             "summary": {
                                 "totalWasteCoinMinedPercentage": percent_of_Usermined_coins,
                                 "totalWasteCoinUnMinedPercentage": percent_of_Userunmined_coins
                             },
-                            "totalWasteCoinMined": minedCoins,
                             "leaderBoard": topCoinsMined
-                    }
-            }
-            else:
-                while i < len(agent_user_minerid):
-                    miner_id = list(agent_user_minerid)[i]['coin_allocated_to']
-                    if miner_id != UserCoins.objects.get(user__user_id=user_id).minerID:
-                        user_mined_coins = UserCoins.objects.get(minerID=miner_id).minedCoins
-                        unminedCoins = UserCoins.objects.get(minerID=miner_id).allocateWasteCoin
-                        total_coin_mined = total_coin_mined + user_mined_coins
-                        total_coin_unmined = total_coin_unmined + unminedCoins
-                    i +=1
-                #Get Percentage Agent
-                sum_of_coins = total_coin_mined + total_coin_unmined
-                percent_of_mined_coins = round((total_coin_mined/(sum_of_coins+0.0001))*100)
-                percent_of_unmined_coins = round((total_coin_unmined/(sum_of_coins+0.0001))*100)
-                return_data = {
-                    "error": "0",
-                    "message": "Sucessfull",
-                    "data":
-                        {
-                            "allocatedWasteCoin": user_coins,
-                            "month": month,
-                            "exchangeRate": exchangeRate,
-                            "changedRate": changed_rate,
-                            "totalWasteCoinMined": total_coin_mined,
-                            "totalWasteCoinUnmined": total_coin_unmined,
-                            "summary": {
-                                "totalWasteCoinMinedPercentage": percent_of_mined_coins,
-                                "totalWasteCoinUnMinedPercentage": percent_of_unmined_coins
-                            },
-                            "exchangeRate": exchangeRate,
-                            "changedRate": changed_rate
                     }
             }
         else:
@@ -474,10 +442,10 @@ def Dashboard(request,decrypedToken):
                 "error": "2",
                 "message": "Invalid Parameter"
             }
-    except Exception:
+    except Exception as e:
         return_data = {
             "error": "3",
-            "message": "An error occured"
+            "message": str(e)
         }
     return Response(return_data)
 
@@ -489,7 +457,7 @@ def LeadBoard(request):
         i = 0
         topCoinsMined = []
         numberOfUsers = 2
-        while i < numberOfUsers:
+        while i < len(WasteCoinBoard):
             topUsers = {
                 "miner_id": WasteCoinBoard[i].minerID,
                 "CoinMined": UserCoins.objects.get(user__user_id=WasteCoinBoard[i].user.user_id).minedCoins
@@ -526,38 +494,63 @@ def user_profile(request,decrypedToken):
             }
         else:
             account_details = {
-                "account_name": "null",
-                "account_number": "null",
-                "bank_name": "null"
+                "account_name": None,
+                "account_number": None,
+                "bank_name": None
             }
-        return_data = {
-            "error": "0",
-            "message": "Successfull",
-            "data": {
+        if decrypedToken['role'] == 'user':
+            UserInfo = User.objects.get(user_id=userID)
+            UserCoin = UserCoins.objects.get(user__user_id=userID)
+            return_data = {
+                "error": "0",
+                "message": "Successfull",
+                "data": {
                     "user_details": {
-                            "first_name": f"{UserInfo.firstname}",
-                            "last_name": f"{UserInfo.lastname}",
-                            "email": f"{UserInfo.email}",
-                            "phone_number": f"{UserInfo.user_phone}",
-                            "gender": f"{UserInfo.user_gender}",
-                            "address": f"{UserInfo.user_address}",
-                            "state": f"{UserInfo.user_state}",
-                            "LGA": f"{UserInfo.user_LGA}",
-                            "country": f"{UserInfo.user_country}",
-                            "role": f"{UserInfo.role}"
+                        "first_name": f"{UserInfo.firstname}",
+                        "last_name": f"{UserInfo.lastname}",
+                        "email": f"{UserInfo.email}",
+                        "phone_number": f"{UserInfo.user_phone}",
+                        "gender": f"{UserInfo.user_gender}",
+                        "address": f"{UserInfo.user_address}",
+                        "state": f"{UserInfo.user_state}",
+                        "LGA": f"{UserInfo.user_LGA}",
+                        "country": f"{UserInfo.user_country}",
+                        "role": f"{UserInfo.role}"
                         }
                     ,
                     "user_coins": {
-                            "miner_id": f"{UserCoin.minerID}",
-                            "allocatedCoin": f"{UserCoin.allocateWasteCoin}",
-                            "minedcoins": f"{UserCoin.minedCoins}"
+                        "miner_id": f"{UserCoin.minerID}",
+                        "mined_coins": f"{UserCoin.minedCoins}",
+                        "redeemed_coins": f"{UserCoin.redeemedWasteCoin}",
                         },
                     "account_information": account_details
 
+                    }
                 }
+        else:
+            UserInfo = User.objects.get(user_id=userID)
+            AgentCoin = AgentCoins.objects.get(agent__user_id=userID)
+            return_data = {
+                "error": "0",
+                "message": "Successfull",
+                "data": {
+                    "user_details": {
+                    "first_name": f"{UserInfo.firstname}",
+                    "last_name": f"{UserInfo.lastname}",
+                    "email": f"{UserInfo.email}",
+                    "phone_number": f"{UserInfo.user_phone}",
+                    "gender": f"{UserInfo.user_gender}",
+                    "address": f"{UserInfo.user_address}",
+                    "state": f"{UserInfo.user_state}",
+                    "LGA": f"{UserInfo.user_LGA}",
+                    "country": f"{UserInfo.user_country}",
+                    "role": f"{UserInfo.role}"
+                    },
+                    "agent_coins": f"{AgentCoin.agentCoins}",
+                    "account_information": account_details
 
-        }
-
+                    }
+                }
     except Exception:
         return_data = {
             "error": "3",
@@ -570,12 +563,12 @@ def user_profile(request,decrypedToken):
 def wallet_details(request,decrypedToken):
     try:
         userID = decrypedToken['user_id']
-        user_coins = UserCoins.objects.get(user__user_id=userID)
-        transaction_history = UserTrasactionHistory.objects.filter(user__user_id=userID)
-        numOfTransactions = len(transaction_history)
         trasactions = []
         if decrypedToken["role"] == "user":
             i = 0
+            transaction_history = UserTrasactionHistory.objects.filter(user__user_id=userID)
+            numOfTransactions = len(transaction_history)
+            user_coins = UserCoins.objects.get(user__user_id=userID)
             while i < numOfTransactions:
                 perTransaction = {
                     "date": transaction_history[i].date_added.strftime("%Y-%m-%d"),
@@ -588,12 +581,15 @@ def wallet_details(request,decrypedToken):
                 "error": "0",
                 "message": "Successfull",
                 "data": {
-                    "current_balance": f"{user_coins.allocateWasteCoin}",
-                    "transaction_history": trasactions[1:]
+                    "current_balance": f"{user_coins.minedCoins}",
+                    "transaction_history": trasactions[1:][::-1]
                 }
             }
         else:
             i = 0
+            transaction_history = AgentTransactionHistory.objects.filter(agent__user_id=userID)
+            numOfTransactions = len(transaction_history)
+            agent_coins = AgentCoins.objects.get(agent__user_id=userID)
             while i < numOfTransactions:
                 perTransaction = {
                     "date": transaction_history[i].date_added.strftime("%Y-%m-%d"),
@@ -607,8 +603,8 @@ def wallet_details(request,decrypedToken):
                 "error": "0",
                 "message": "Successfull",
                 "data": {
-                    "current_balance": f"{user_coins.allocateWasteCoin}",
-                    "transaction_history": trasactions[1:]
+                    "current_balance": f"{agent_coins.agentCoins}",
+                    "transaction_history": trasactions[::-1]
                 }
             }
     except Exception:
@@ -633,7 +629,7 @@ def redeemcoins(request,decrypedToken):
             else:
                 user_coins = UserCoins.objects.get(user__user_id=decrypedToken["user_id"])
                 exchange_rate = fixed_var.exchange_rate
-                numofCoins = user_coins.allocateWasteCoin
+                numofCoins = user_coins.minedCoins
                 user_data = User.objects.get(user_id=decrypedToken["user_id"])
                 if coins_amount > numofCoins:
                     return_data = {
@@ -643,12 +639,12 @@ def redeemcoins(request,decrypedToken):
                 else:
                     transactionid = string_generator.alphanumeric(15)
                     toNaira = exchange_rate * coins_amount
-                    user_coins.allocateWasteCoin = numofCoins - coins_amount
-                    user_coins.minedCoins = coins_amount
+                    user_coins.minedCoins = numofCoins - coins_amount
+                    user_coins.redeemedWasteCoin = coins_amount
                     user_coins.save()
                     #Save Transaction
                     transaction = UserTrasactionHistory(user=user_data,transaction_id=transactionid,
-                                      amount=coins_amount,coin_mined_amount=toNaira,coin_allocated_to=user_coins.minerID,transaction="Debit")
+                                                        amount=coins_amount,coin_redeemed_amount=toNaira,transaction="Debit")
                     transaction.save()
                     #Add coin to the coin repository
                     return_data = {
@@ -685,7 +681,6 @@ def allocate_coins(request,decrypedToken):
                     "message": "User does not exist"
 
                     }
-
             elif User.objects.get(user_id= decrypedToken['user_id']).role != "agent":
                 return_data = {
                     "error": "2",
@@ -693,7 +688,7 @@ def allocate_coins(request,decrypedToken):
 
                     }
             else:
-                agent_coins = UserCoins.objects.get(user__user_id=decrypedToken["user_id"]).allocateWasteCoin
+                agent_coins = AgentCoins.objects.get(agent__user_id=decrypedToken["user_id"]).agentCoins
                 if coins_allocated > agent_coins:
                     return_data = {
                         "error": "2",
@@ -703,27 +698,28 @@ def allocate_coins(request,decrypedToken):
                     wastecoin_user = UserCoins.objects.get(minerID=user_MinerID)
                     user = wastecoin_user.user
                     agent_user = User.objects.get(user_id= decrypedToken['user_id'])
-                    agent_coins = UserCoins.objects.get(user__user_id=decrypedToken["user_id"])
+                    agent_coins = AgentCoins.objects.get(agent__user_id=decrypedToken["user_id"])
                     user_coins = UserCoins.objects.get(user__user_id=user.user_id)
                     string_generator.alphanumeric(15)
                     #allocate Coin to user
-                    remaining_coins =agent_coins.allocateWasteCoin - coins_allocated
-                    agent_coins.allocateWasteCoin = remaining_coins
+                    remaining_coins =agent_coins.agentCoins - coins_allocated
+                    agent_coins.agentCoins = remaining_coins
                     #Debit_agent
-                    withdrawl= UserTrasactionHistory(user=agent_user,transaction_id=string_generator.alphanumeric(15),amount=coins_allocated,
-                                                     coin_mined_amount=0,coin_allocated_to=user_MinerID,transaction="Debit")
+                    withdrawl= AgentTransactionHistory(agent=agent_user,transaction_id=string_generator.alphanumeric(15),amount=coins_allocated,
+                                                       coin_allocated_to=user_MinerID,transaction="Debit")
                     agent_coins.save()
                     withdrawl.save()
                     #credit User
-                    add_coins = user_coins.allocateWasteCoin + coins_allocated
-                    user_coins.allocateWasteCoin = add_coins
-                    allocate = UserTrasactionHistory(user=user,transaction_id=string_generator.alphanumeric(15),amount=coins_allocated,
-                                                     coin_mined_amount=0,coin_allocated_to=user_MinerID,transaction="Credit")
+                    add_coins = user_coins.minedCoins + coins_allocated
+                    user_coins.minedCoins = add_coins
+                    allocate = UserTrasactionHistory(user=user,transaction_id=string_generator.alphanumeric(15),
+                                                     amount=coins_allocated,transaction="Credit")
                     user_coins.save()
                     allocate.save()
                     return_data = {
                         "error": "0",
-                        "message": f"Successful,coins allocated to {user.firstname} {user.lastname}"
+                        "message": f"Successful,coins allocated to {user.firstname} {user.lastname}",
+                        "current_balance": f"{remaining_coins}"
                     }
         else:
             return_data = {
@@ -854,3 +850,5 @@ def account_details(request,decryptedToken):
             "message": "An error occured"
         }
     return Response(return_data)
+
+#
