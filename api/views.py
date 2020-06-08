@@ -878,7 +878,7 @@ def contact_us(request):
                 "error": "2",
                 "message": "Invalid Parameters"
             }
-    except:
+    except Exception:
         return_data = {
             "error": "3",
             "message": "An error occured"
