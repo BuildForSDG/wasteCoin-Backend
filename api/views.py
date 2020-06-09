@@ -1,14 +1,13 @@
 import datetime
 
 import jwt
+from api.models import (AccountDetails, AgentCoins, AgentTransactionHistory,
+                        ContactUs, User, UserCoins, UserTrasactionHistory, otp)
+from CustomCode import (autentication, fixed_var, password_functions, sms,
+                        string_generator, validator)
 from django.db.models import Sum
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-from api.models import (AccountDetails, AgentCoins, AgentTransactionHistory,
-                        User, UserCoins, UserTrasactionHistory, otp)
-from CustomCode import (autentication, fixed_var, password_functions, sms,
-                        string_generator, validator)
 from wasteCoin import settings
 
 
@@ -851,4 +850,38 @@ def account_details(request,decryptedToken):
         }
     return Response(return_data)
 
+@api_view(["POST"])
+def contact_us(request):
+    try:
+        fullName = request.data.get('full_name',None)
+        Email = request.data.get('email',None)
+        phoneNumber = request.data.get('phone_number',None)
+        Message = request.data.get('message',None)
+        field = [fullName,Email,Message]
+        if not None in field and not "" in field:
+            if phoneNumber == None or phoneNumber == "":
+                contact_response = ContactUs(full_name=fullName,email=Email,message=Message)
+                contact_response.save()
+                return_data = {
+                    "error": "0",
+                    "message": "Your response have been saved successfully"
+                }
+            else:
+                contact_response = ContactUs(full_name=fullName,email=Email,phone_number=phoneNumber,message=Message)
+                contact_response.save()
+                return_data = {
+                    "error": "0",
+                    "message": "Your response have been saved successfully"
+                }
+        else:
+            return_data = {
+                "error": "2",
+                "message": "Invalid Parameters"
+            }
+    except Exception:
+        return_data = {
+            "error": "3",
+            "message": "An error occured"
+        }
+    return Response(return_data)
 #
