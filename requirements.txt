@@ -1,4 +1,4 @@
-Django==2.2.13 
+Django==2.2.22 
 djangorestframework==3.9.1
 bcrypt==3.1.7 
 psycopg2==2.8.4
